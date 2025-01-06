@@ -13,14 +13,16 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     console.log(`network name is ${network.name}`)
     console.log(`deployer is ${deployer}`)
     if (deveplomentChains.includes(network.name)) {
-        log("Local network detected! Deploying Mocks...")
+        console.log("Local network detected! Deploying Mocks...")
         await deploy("MockV3Aggregator", {
             from: deployer,
             log: true,
             args: [DECIMALS, INITIAL_ANSWER],
         })
-        log("Mocks deployed!")
-        log("---------------------------------")
+        console.log("Mocks deployed!")
+        console.log("---------------------------------")
+    } else {
+        console.log("Remote networkdetected! Skipping mocks...")
     }
 }
 

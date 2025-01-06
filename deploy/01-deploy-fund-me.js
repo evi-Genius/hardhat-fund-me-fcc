@@ -41,7 +41,8 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     ) {
         await verify(fundMe.address, args)
     }
-    log("--------------------------------")
+    console.log("Depleyed FundMe to:", fundMe.address)
+    console.log("-------------------")
 }
 
 module.exports.tags = ["all", "fundme"]
