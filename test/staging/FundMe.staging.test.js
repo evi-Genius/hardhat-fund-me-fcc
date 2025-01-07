@@ -7,7 +7,7 @@ deveplomentChains.includes(network.name)
     : describe("FundMe", async () => {
           let fundme
           let deployer
-          const sendValue = ethers.parseEther("0.1")
+          const sendValue = ethers.parseEther("0.05")
           beforeEach(async () => {
               const { deployer } = await getNamedAccounts()
               const [owner] = await ethers.getSigners()
@@ -20,12 +20,19 @@ deveplomentChains.includes(network.name)
               )
           })
           it("allows people to fund and withdraw", async () => {
-              await fundme.fund({ value: sendValue })
-              await fundme.withdraw()
+              console.log("funding...")
+              const res = await fundme.fund({ value: sendValue })
+              // NOTE!  这里的wait有什么作用？不加wait似乎会更容易withdraw失败？
+              res.wait(3)
+              console.log("withdrawing...")
+              const transactionResponse = await fundme.withdraw()
+              const transactionReceipt = await transactionResponse.wait(3)
+              console.log("getbalance...")
               const endingBalance = await ethers.provider.getBalance(
                   fundme.target
               )
               console.log(endingBalance)
-              assert.equal(endingBalance.toString(), "0")
+              // NOTE! 为什么这里会卡住？
+              assert.equal(endingBalance, 0)
           })
       })

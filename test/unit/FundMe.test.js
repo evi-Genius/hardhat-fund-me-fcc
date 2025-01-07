@@ -13,7 +13,13 @@ const { deveplomentChains } = require("../../helper-hardhat-config")
           beforeEach(async () => {
               await deployments.fixture("all")
               const { deployer } = await getNamedAccounts()
+              //   const [owner] = await ethers.getSigners()
+              const singers = await ethers.getSigners()
               const [owner] = await ethers.getSigners()
+              assert.equal(singers.length, 20)
+              assert.equal(owner.address, singers[0].address)
+              // NOTE!  signer 和 deployer 有区别， getContractAt() 传入的参数是 signer??
+              //   signer = owner
               signer = owner
               if (!deployer) {
                   throw new Error("Deployer address is null")
